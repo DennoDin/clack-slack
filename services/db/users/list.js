@@ -1,5 +1,11 @@
 module.exports = (knex, User) => {
   return () => {
-    return Promise.resolve([]); // fix me!
+    return knex("users")
+      .select()
+      .then((users) => {
+        return users.map((user) => {
+          return new User(user);
+        });
+      });
   };
 };
