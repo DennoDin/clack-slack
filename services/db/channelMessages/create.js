@@ -25,14 +25,16 @@ module.exports = (knex, ChannelMessage) => {
           .select();
       })
       .then((cMessage) => {
-        const obj = {
-          from: cMessage[0].username,
-          to: cMessage[0].name,
-          message: cMessage[0].message,
-          id: cMessage[0].id,
-          sent_at: cMessage[0].sent_at,
-        };
-        return [new ChannelMessage(obj)];
+        return cMessage.map((singleMessage) => {
+          const obj = {
+            from: singleMessage.username,
+            to: singleMessage.name,
+            message: singleMessage.message,
+            id: singleMessage.id,
+            sent_at: singleMessage.sent_at,
+          };
+          return new ChannelMessage(obj);
+        });
       })
 
       .catch((err) => {
